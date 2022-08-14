@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from "./components/UI/Navbar/Navbar";
+import Page404 from "./components/Pages/404";
+import './styles/App.css';
+import {privateRoutes, pablicRoutes} from './components/Router/index'
+import Login from "./components/Pages/Login";
 
 function App() {
+
+  const isAuth = true;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        <BrowserRouter>
+              <Navbar/>
+            <main>
+                    {
+                      isAuth 
+                      ?
+                        <Routes>
+                          {
+                          privateRoutes.map( com => 
+                            <Route path={com.path} element={com.component}/>
+                          )}
+                          <Route path = '*' element={<Page404/>} />
+                        </Routes>
+                      : 
+                        <Routes>
+                            {
+                            pablicRoutes.map( com => 
+                              <Route path={com.path} element={com.component}/>
+                            )}
+                             <Route path = '*' element={<Login/>} />
+                        </Routes>
+                    }                           
+            </main>
+        </BrowserRouter>
+  )
 }
 
 export default App;
